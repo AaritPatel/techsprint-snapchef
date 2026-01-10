@@ -1,12 +1,17 @@
 import streamlit as st
 from PIL import Image
 import image_handler  # <--- NEW LINE
+import image_handler
+import chef_brain  # <--- NEW LINE
+
+# 1.. Minimal Welcome Interface
+st.markdown("<h1 style='text-align: center; color: #FF4B4B;'>🍳 Welcome to SnapChef</h1>", unsafe_allow_html=True)
+st.write("### Your kitchen, reimagined. Snap a photo and let's get cooking!")
 
 # 1. Page Configuration (The Title Bar)
 st.set_page_config(page_title="SnapChef", page_icon="🍳", layout="centered")
 
 # 2. Main Title and CSS Styling
-st.title("🍳 SnapChef")
 st.write("Snap a photo of your fridge ingredients, and I'll tell you what to cook!")
 
 # 3. Two Input Options: Camera OR File Upload
@@ -32,13 +37,20 @@ if image_source:
     
     # This button will eventually trigger the AI (Member 3's job)
     if st.button("👨‍🍳 Generate Recipe", type="primary"):
-        # 1. Process the image (Member 2's Job)
         try:
-            processed_image = image_handler.process_image(image_source)
-            st.success("✅ Image processed successfully!")
-            
-            # 2. AI Logic (Member 3's Job - Coming Soon)
-            st.info("Sending to AI Chef...")
-            
+            with st.spinner("👨‍🍳 Chef is analyzing your ingredients...Stay calm as it might take a few seconds to suggest you a delicious meal..."):
+                # 1. Process Image
+                processed_image = image_handler.process_image(image_source)
+                
+                # 2. Ask the AI (Member 3's Job)
+                response_text = chef_brain.get_recipe(processed_image)
+                
+                # 3. Display Result
+                st.markdown(response_text)
+                st.balloons()
+                
         except Exception as e:
-            st.error(f"Error processing image: {e}")
+            st.error(f"Error: {e}")
+
+            
+

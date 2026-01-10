@@ -3,8 +3,18 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 
 # 1. Load the environment variables
-load_dotenv()
-api_key = os.getenv("GOOGLE_API_KEY")
+import google.generativeai as genai
+
+# ---------------------------------------------------------
+# PASTE YOUR KEY DIRECTLY INSIDE THE QUOTES BELOW
+# Example: api_key = "AIzaSyD......"
+# ---------------------------------------------------------
+api_key = "AIzaSyBSHB1T68xFABgClBlzYVnWlPzvAp8VMpU" 
+
+if not api_key or "PASTE" in api_key:
+    print("❌ Error: You forgot to paste your API Key in the code!")
+else:
+    genai.configure(api_key=api_key)
 
 # 2. Configure the AI Model
 if api_key:
@@ -43,7 +53,7 @@ def get_recipe(image_parts):
     """
 
     # 4. Select the Model (Gemini 1.5 Flash is fast and free)
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-2.5-flash')
     
     # 5. Generate the Content
     response = model.generate_content([system_prompt, image_parts[0]])
